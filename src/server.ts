@@ -4,6 +4,25 @@ import { parse } from 'rss-to-json';
 import cors from 'cors';
 import dataSources from "./utils/data-sources";
 
+
+type FeedItem = {
+  title: string;
+  created: string;
+  description: string;
+  enclosures: { url: string }[];
+  link: string;
+};
+
+type FeedArray = {
+  title: string;
+  description: string;
+  link: string;
+  image: string;
+  items: FeedItem[];
+  mainIdx: number;
+  sourceIdx: number;
+};
+
 dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 5000;
@@ -11,14 +30,18 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 
 app.get('/feed', async (req: Request, res: Response) => {
-  const feedArray: { title: any; description: any; link: any; image: any; category: any; items: any[]; }[] = [];
+  const feedArray: FeedArray[] = [];
  
-  await Promise.all(dataSources.map(async (mainItem, idx) => {
+  await Promise.all(dataSources.map(async (mainItem, mainIndex) => {
     try {
-      await Promise.all(mainItem.sources.map(async (source, index) => {
+      await Promise.all(mainItem.sources.map(async (source, sourceIndex) => {
         if (source.active) {
           const feed = await parse(source.url);
-          feedArray.push(feed);
+          feedArray.push({
+            ...feed,
+            mainIdx: mainIndex,
+            sourceIdx: sourceIndex,
+          });
         } 
       }));
     } catch (error) {
@@ -26,7 +49,19 @@ app.get('/feed', async (req: Request, res: Response) => {
     }
   }));
 
-  res.send(feedArray);
+  const responseData = dataSources.map((mainItem, mainIndex) => {
+    return {
+      ...mainItem,
+      sources: mainItem.sources.map((source, sourceIndex) => {
+        return {
+          ...source,
+          feed: feedArray.find((item) => item.mainIdx === mainIndex && item.sourceIdx === sourceIndex)?.items
+        }
+      })
+    }
+  });
+
+  res.send(responseData);
 })
 
 app.listen(port, () => {

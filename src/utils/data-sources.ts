@@ -15,13 +15,13 @@ const dataSources = [{
     name: 'Polska',
     url: 'https://www.polsatnews.pl/rss/polska.xml',
     feed: [],
-    active: false,
+    active: true,
   },
   {
     name: 'Świat',
     url: 'https://www.polsatnews.pl/rss/swiat.xml',
     feed: [],
-    active: false,
+    active: true,
   },
   {
     name: 'Wideo',
