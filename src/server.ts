@@ -32,7 +32,7 @@ app.use(cors());
 app.get('/feed', async (req: Request, res: Response) => {
   const feedArray: FeedArray[] = [];
 
-  if (!req.query.sources) {
+  if (!('sources' in req.query)) {
     await Promise.all(
       dataSources.map(async (mainItem, mainIndex) => {
         try {
@@ -54,7 +54,7 @@ app.get('/feed', async (req: Request, res: Response) => {
       }),
     );
   } else {
-    const sourcesIds = req.query.sources.toString().split(',');
+    const sourcesIds = req.query.sources!.toString().split(',');
     await Promise.allSettled(
       sourcesIds.map(async (sourceId) => {
         await Promise.all(
