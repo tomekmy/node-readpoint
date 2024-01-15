@@ -1,5 +1,6 @@
 const dataSources = [
   {
+    id: '27dde2d0-4ad8-4295-9f2a-37fc974c3228',
     sourceName: 'Polsat News',
     lightColor: '#e6007e',
     darkColor: '#143266',
@@ -8,30 +9,35 @@ const dataSources = [
     active: false,
     sources: [
       {
+        id: '0dfcedb5-bcc7-4af1-9761-3ffbe7920a94',
         name: 'Wszystkie',
         url: 'https://www.polsatnews.pl/rss/wszystkie.xml',
         feed: [],
         active: true,
       },
       {
+        id: '7033640d-ea36-444c-a5ad-f946169a0a2a',
         name: 'Polska',
         url: 'https://www.polsatnews.pl/rss/polska.xml',
         feed: [],
         active: true,
       },
       {
+        id: 'abd9baf2-e8e2-48a6-a7bc-f8d42879c0b6',
         name: 'Świat',
         url: 'https://www.polsatnews.pl/rss/swiat.xml',
         feed: [],
         active: true,
       },
       {
+        id: '10d8992e-1301-4498-99ec-034dcbdad438',
         name: 'Wideo',
         url: 'https://www.polsatnews.pl/rss/wideo.xml',
         feed: [],
         active: false,
       },
       {
+        id: '4fbd38c5-df2b-43a0-9aed-b1320f689c23',
         name: 'Biznes',
         url: 'https://www.polsatnews.pl/rss/biznes.xml',
         feed: [],
@@ -40,6 +46,7 @@ const dataSources = [
     ],
   },
   {
+    id: '2a5def3d-8837-4c7d-bcc0-de42a9790a89',
     sourceName: 'Polska Agencja Prasowa',
     lightColor: '#e6007e',
     darkColor: '#842219',
@@ -48,12 +55,14 @@ const dataSources = [
     active: false,
     sources: [
       {
+        id: '0d7b1212-a9c2-4569-8192-179f8144687f',
         name: 'Wszystkie',
         url: 'https://pap-mediaroom.pl/rss.xml',
         feed: [],
         active: true,
       },
       {
+        id: '5b9560af-5573-416a-bc08-748411015870',
         name: 'Biznes i finanse',
         url: 'https://pap-mediaroom.pl/kategoria/biznes-i-finanse/rss.xml',
         feed: [],
@@ -62,6 +71,7 @@ const dataSources = [
     ],
   },
   {
+    id: 'd4eb9890-c47c-4f63-8fa7-8e4861d6a0e3',
     sourceName: 'Auto centrum',
     lightColor: '#e6007e',
     darkColor: '#1e80a4',
@@ -70,12 +80,14 @@ const dataSources = [
     active: false,
     sources: [
       {
+        id: '021247fb-d2e1-42ef-91fa-07dfc203addf',
         name: 'Co nowego',
         url: 'https://www.autocentrum.pl/rss/co-nowego/',
         feed: [],
         active: true,
       },
       {
+        id: '3a2e5b9e-67a0-403a-b570-edb4c05d41b2',
         name: 'Publikacje',
         url: 'https://www.autocentrum.pl/rss/publikacje/',
         feed: [],
@@ -84,6 +96,7 @@ const dataSources = [
     ],
   },
   {
+    id: '0c61cf02-d41e-41a6-b98a-872561588fe4',
     sourceName: 'Interia',
     lightColor: '#e6007e',
     darkColor: '#4b69b4',
@@ -92,12 +105,14 @@ const dataSources = [
     active: false,
     sources: [
       {
+        id: 'e52d838a-13e7-4731-ac87-5f7aff78702f',
         name: 'Wydarzenia',
         url: 'https://wydarzenia.interia.pl/feed',
         feed: [],
         active: true,
       },
       {
+        id: '88d31b42-88fd-4407-a291-d29b0c64f616',
         name: 'Polska',
         url: 'https://wydarzenia.interia.pl/kraj/feed',
         feed: [],

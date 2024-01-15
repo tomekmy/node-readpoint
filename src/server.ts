@@ -31,26 +31,37 @@ app.use(cors());
 app.get('/feed', async (req: Request, res: Response) => {
   const feedArray: FeedArray[] = [];
 
-  await Promise.all(
-    dataSources.map(async (mainItem, mainIndex) => {
-      try {
-        await Promise.all(
-          mainItem.sources.map(async (source, sourceIndex) => {
-            if (source.active) {
-              const feed = await parse(source.url);
-              feedArray.push({
-                ...feed,
-                mainIdx: mainIndex,
-                sourceIdx: sourceIndex,
-              });
-            }
-          }),
-        );
-      } catch (error) {
-        console.error(error);
-      }
-    }),
-  );
+  if (!req.query.sources) {
+    await Promise.all(
+      dataSources.map(async (mainItem, mainIndex) => {
+        try {
+          await Promise.all(
+            mainItem.sources.map(async (source, sourceIndex) => {
+              if (source.active) {
+                const feed = await parse(source.url);
+                feedArray.push({
+                  ...feed,
+                  mainIdx: mainIndex,
+                  sourceIdx: sourceIndex,
+                });
+              }
+            }),
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      }),
+    );
+  } else {
+    console.log('req', req.query.sources);
+    const sources = req.query.sources.toString().split(',');
+    sources.forEach((source) => {
+      const [sourceName, name] = source.split('_');
+      const findSource = dataSources.find((item) => item.sourceName === sourceName)?.sources.find((item) => item.name === name);
+
+      console.log('findSource', findSource);
+    });
+  }
 
   const responseData = dataSources.map((mainItem, mainIndex) => {
     return {
