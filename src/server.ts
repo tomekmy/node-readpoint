@@ -54,14 +54,31 @@ app.get('/feed', async (req: Request, res: Response) => {
       }),
     );
   } else {
-    console.log('req', req.query.sources);
-    const sources = req.query.sources.toString().split(',');
-    sources.forEach((source) => {
-      const [sourceName, name] = source.split('_');
-      const findSource = dataSources.find((item) => item.sourceName === sourceName)?.sources.find((item) => item.name === name);
-
-      console.log('findSource', findSource);
-    });
+    const sourcesIds = req.query.sources.toString().split(',');
+    await Promise.allSettled(
+      sourcesIds.map(async (sourceId) => {
+        await Promise.all(
+          dataSources.map(async (mainItem, mainIndex) => {
+            try {
+              await Promise.all(
+                mainItem.sources.map(async (source, sourceIndex) => {
+                  if (source.id === sourceId) {
+                    const feed = await parse(source.url);
+                    feedArray.push({
+                      ...feed,
+                      mainIdx: mainIndex,
+                      sourceIdx: sourceIndex,
+                    });
+                  }
+                }),
+              );
+            } catch (error) {
+              console.error(error);
+            }
+          }),
+        );
+      }),
+    );
   }
 
   const responseData = dataSources.map((mainItem, mainIndex) => {
@@ -81,7 +98,19 @@ app.get('/feed', async (req: Request, res: Response) => {
     };
   });
 
-  res.send(responseData);
+  const inactiveEmptyFeed = responseData.map((mainItem) => {
+    return {
+      ...mainItem,
+      sources: mainItem.sources.map((source) => {
+        return {
+          ...source,
+          active: !!source.feed?.length,
+        };
+      }),
+    };
+  });
+
+  res.send(inactiveEmptyFeed);
 });
 
 app.listen(port, () => {
