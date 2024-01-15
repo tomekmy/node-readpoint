@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { parse } from 'rss-to-json';
 import cors from 'cors';
 import dataSources from './utils/data-sources';
+import crypto from 'crypto';
 
 type FeedItem = {
   title: string;
@@ -69,7 +70,12 @@ app.get('/feed', async (req: Request, res: Response) => {
       sources: mainItem.sources.map((source, sourceIndex) => {
         return {
           ...source,
-          feed: feedArray.find((item) => item.mainIdx === mainIndex && item.sourceIdx === sourceIndex)?.items,
+          feed: feedArray
+            .find((item) => item.mainIdx === mainIndex && item.sourceIdx === sourceIndex)
+            ?.items.map((item) => ({
+              ...item,
+              id: crypto.randomUUID(),
+            })),
         };
       }),
     };
