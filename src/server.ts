@@ -110,6 +110,17 @@ app.get('/feed', async (req: Request, res: Response) => {
     };
   });
 
+  if (req.query.limit) {
+    const limit = parseInt(req.query.limit!.toString());
+    inactiveEmptyFeed.forEach((mainItem) => {
+      mainItem.sources.forEach((source) => {
+        if (source.feed && source.feed.length > limit) {
+          source.feed = source.feed.slice(0, limit);
+        }
+      });
+    });
+  }
+
   res.send(inactiveEmptyFeed);
 });
 
